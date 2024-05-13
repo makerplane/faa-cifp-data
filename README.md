@@ -1,3 +1,6 @@
+[![faa-cifp-data](https://snapcraft.io/faa-cifp-data/badge.svg)](https://snapcraft.io/faa-cifp-data)
+
+
 ## Virtual VFR data for pyefis
 This is the code used to build the faa-cifp-data snap that contains the CIFP data published by the FAA. 
 The resulting snap includes the `FAACIFP18` file and an `index.bin` that is needed by pyefis Virtual VFR feature.
