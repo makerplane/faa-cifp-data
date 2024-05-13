@@ -1,0 +1,43 @@
+name: faa-cifp-data
+adopt-info: data
+summary: Indexed FAA CIFP data for pyEFIS Virtual VFR
+description: |
+  This content snap contains the FAA CIFP data needed for the pyEFIS Virtual VFR feature to work.
+  The FAA publishes this data every 28 days, the version of this snap represents the date of the FAA release that is contained in this snap.
+  When avaliable, this snap will also include the next version of the CIFP data.
+
+  **Disclaimer Regarding FAA Navigation Data**
+
+  Please be advised that the Federal Aviation Administration (FAA) navigation data used in this application is not approved by the FAA for operational use. This data is provided for informational purposes only and should not be relied upon for navigation or flight planning. The navigation data stored in our repository is subject to expiration and must be renewed every 28 days. It is the responsibility of the user to ensure that the navigation data is current and valid at the time of use. We expressly disclaim any liability for any inaccuracies in the data and any consequences that may result from its use.
+
+build-base: core24
+base: bare
+grade: stable
+confinement: strict
+slots:
+  faa-cifp-data:
+    interface: content
+    source:
+      read:
+        - $SNAP/CIFP
+
+
+parts:
+  data:
+    plugin: dump
+    source: .
+    build-packages:
+      - python3
+      - python3-pip
+      - python3-venv
+    override-build: |
+      craftctl default
+      python3 -m venv ~/.local --system-site-packages
+      source ~/.local/bin/activate
+      pip install pyavtools
+      python3 download.py
+      cp -r CIFP $SNAPCRAFT_PART_INSTALL
+      craftctl set version=$(cat metadata)
+    stage:
+      - CIFP
+
