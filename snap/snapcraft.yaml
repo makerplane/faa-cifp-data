@@ -3,8 +3,7 @@ adopt-info: data
 summary: Indexed FAA CIFP data for pyEFIS Virtual VFR
 description: |
   This content snap contains the FAA CIFP data needed for the pyEFIS Virtual VFR feature to work.
-  The FAA publishes this data every 28 days, the version of this snap represents the date of the FAA release that is contained in this snap.
-  When avaliable, this snap will also include the next version of the CIFP data.
+  The version of this snap represents the effective and expiration date of the data.
 
   **Disclaimer Regarding FAA Navigation Data**
 
