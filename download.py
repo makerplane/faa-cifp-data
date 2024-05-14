@@ -44,8 +44,8 @@ expire_date = download_date + datetime.timedelta(days=interval_days)
 current_yaml = f"current_expires:\n  year: {expire_date.strftime('%Y')}\n  month: {expire_date.strftime('%m')}\n  day: {expire_date.strftime('%d')}"
 
 # The snap version is always the current release even if it includes the next release too
-with open("metadata", "w") as text_file:
-    text_file.write(download_date.strftime('%Y.%m.%d'))
+meta_start = download_date.strftime('%Y.%m.%d')
+
 url = f"https://aeronav.faa.gov/Upload_313-d/cifp/CIFP_{download_date.strftime('%y%m%d')}.zip"
 
 #Download
@@ -62,13 +62,16 @@ index_db("CIFP/current.db", "CIFP/current.bin")
 
 next_yaml = ""
 # Now we try to get the next file since they publish them early
+# publish data of the next file
+theyear = next_date.year
+themonth = next_date.month
+theday = next_date.day
+download_date = datetime.date(year=theyear,month=themonth,day=theday)
+meta_end = download_date.strftime('%Y.%m.%d')
 
+
+# Now we try to get the next file since they publish them early
 try:
-    # publish data of the next file
-    theyear = next_date.year
-    themonth = next_date.month
-    theday = next_date.day
-    download_date = datetime.date(year=theyear,month=themonth,day=theday)
     # Try to download it, only avaliable within ~10 days of the release date
     url = f"https://aeronav.faa.gov/Upload_313-d/cifp/CIFP_{download_date.strftime('%y%m%d')}.zip"
     urllib.request.urlretrieve(url, "CIFPnext.zip")
@@ -83,9 +86,15 @@ try:
     expire_date = download_date + datetime.timedelta(days=interval_days)
     # Create metadata yaml
     next_yaml = f"next_expires:\n  year: {expire_date.strftime('%Y')}\n  month: {expire_date.strftime('%m')}\n  day: {expire_date.strftime('%d')}"
+    download_date = download_date + datetime.timedelta(days=interval_days)
+    meta_end = download_date.strftime('%Y.%m.%d')
 except:
     pass
 
 # Write metadata.yaml
 with open("CIFP/metadata.yaml", "w") as text_file:
     print(f"{current_yaml}\n{next_yaml}", file=text_file)
+
+
+with open("metadata", "w") as text_file:
+    text_file.write(meta_start + "-" + meta_end)
