@@ -41,7 +41,7 @@ download_date = datetime.date(year=theyear,month=themonth,day=theday)
 # Date the data expires
 expire_date = download_date + datetime.timedelta(days=interval_days)
 # Create metadata yaml
-current_yaml = f"current_expires:\n  year: {expire_date.strftime('%Y')}\n  month: {expire_date.strftime('%m')}\n  day: {expire_date.strftime('%d')}"
+current_yaml = f"current_expires:\n  year: {expire_date.strftime('%Y')}\n  month: {expire_date.strftime('%-m')}\n  day: {expire_date.strftime('%-d')}"
 
 # The snap version is always the current release even if it includes the next release too
 meta_start = download_date.strftime('%Y.%m.%d')
@@ -85,7 +85,7 @@ try:
     # Expiration date of this data set
     expire_date = download_date + datetime.timedelta(days=interval_days)
     # Create metadata yaml
-    next_yaml = f"next_expires:\n  year: {expire_date.strftime('%Y')}\n  month: {expire_date.strftime('%m')}\n  day: {expire_date.strftime('%d')}"
+    next_yaml = f"next_expires:\n  year: {expire_date.strftime('%Y')}\n  month: {expire_date.strftime('%-m')}\n  day: {expire_date.strftime('%-d')}"
     download_date = download_date + datetime.timedelta(days=interval_days)
     meta_end = download_date.strftime('%Y.%m.%d')
 except:
